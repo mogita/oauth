@@ -1258,6 +1258,8 @@ func (c *Consumer) getBody(method, url string, oauthParams *OrderedParams) (*str
 
 // HTTPExecuteError signals that a call to httpExecute failed.
 type HTTPExecuteError struct {
+	// Response is the original response
+	Response *http.Response
 	// RequestHeaders provides a stringified listing of request headers.
 	RequestHeaders string
 	// ResponseBodyBytes is the response read into a byte slice.
@@ -1336,6 +1338,7 @@ func (c *Consumer) httpExecute(
 		bytes, _ := ioutil.ReadAll(resp.Body)
 
 		return resp, HTTPExecuteError{
+			Response:          resp,
 			RequestHeaders:    debugHeader,
 			ResponseBodyBytes: bytes,
 			Status:            resp.Status,
